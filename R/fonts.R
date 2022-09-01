@@ -68,9 +68,9 @@ initFontDir <- function() {
 }
 
 initFontConfig <- function() {
-    tmpdir <- file.path(tempdir(), "dvir")
+    tmpdir <- file.path(tempdir(), "rdvi")
     dir.create(tmpdir)
-    configFile <- file.path(tmpdir, "10-dvir-fonts.conf")
+    configFile <- file.path(tmpdir, "10-rdvi-fonts.conf")
     config <- xml_new_root(xml_dtd("fontconfig", system_id="fonts.dtd"))
     xml_add_child(config, "fontconfig")
     xml_add_child(config, xml_comment("include TeX fonts"))
@@ -78,10 +78,10 @@ initFontConfig <- function() {
                   dirname(system("kpsewhich cmr10 --format=.pfb", intern=TRUE)))
     ## Special case cmex10 
     xml_add_child(config, xml_comment("include custom cmexunicode10 font"))
-    xml_add_child(config, "dir", system.file("fonts", package="dvir"))
-    ## Include 'dvir' custom fonts
+    xml_add_child(config, "dir", system.file("fonts", package="rdvi"))
+    ## Include 'rdvi' custom fonts
     fontDir <- initFontDir()
-    xml_add_child(config, xml_comment("include custom 'dvir' fonts"))
+    xml_add_child(config, xml_comment("include custom 'rdvi' fonts"))
     xml_add_child(config, "dir", fontDir)
     ## cat(as.character(fontconfig))
     set("fontconfig", config)
@@ -268,7 +268,7 @@ defineCairoFont <- function(fontname) {
     ## Special case cmex10 for testing
     if (fontname == "cmex10") {
         afm <- readLines(system.file("fonts", "cmexunicode10.afm",
-                                     package="dvir"))
+                                     package="rdvi"))
     } else {
         afm <- readLines(findTeXFontFile(fontname, suffix=".afm"))
     }

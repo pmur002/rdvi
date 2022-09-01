@@ -1,6 +1,6 @@
 
 ################################################################################
-## Handle special output that is aimed at 'dvir' (from TikZ)
+## Handle special output that is aimed at 'rdvi' (from TikZ)
 
 specialInit <- function() {
     set("inPicture", FALSE)
@@ -135,9 +135,9 @@ specialMetric <- function(op) {
     specialString <- paste(blockValue(op$blocks$op.opparams.string),
                                 collapse="")
     ## Ignore any other specials
-    if (grepl("^dvir:: ", specialString)) {
-        dvirSpecial <- gsub("dvir:: ", "", specialString)
-        if (grepl("^begin-picture", dvirSpecial)) {
+    if (grepl("^rdvi:: ", specialString)) {
+        rdviSpecial <- gsub("rdvi:: ", "", specialString)
+        if (grepl("^begin-picture", rdviSpecial)) {
             h <- get("h")
             v <- get("v")
             x <- fromTeX(h)
@@ -148,8 +148,8 @@ specialMetric <- function(op) {
             set("savedV", v)
             set("metricTransform", list(diag(3)))
             set("inPicture", TRUE)
-        } else if (grepl("^end-picture", dvirSpecial)) {
-            pictureMetric(dvirSpecial)
+        } else if (grepl("^end-picture", rdviSpecial)) {
+            pictureMetric(rdviSpecial)
             set("h", get("savedH"))
             set("v", get("savedV"))        
             set("inPicture", FALSE)
@@ -157,7 +157,7 @@ specialMetric <- function(op) {
             if (get("inPicture")) {
                 ## Output may be multiple specials from
                 ## "protocolled" (recorded) output, so split first by ";"
-                specials <- strsplit(dvirSpecial, ";")[[1]]
+                specials <- strsplit(rdviSpecial, ";")[[1]]
                 lapply(specials, measureSpecial)
             }
         }
@@ -473,9 +473,9 @@ gridSpecial <- function(op) {
     specialString <- paste(blockValue(op$blocks$op.opparams.string),
                                 collapse="")
     ## Ignore any other specials
-    if (grepl("^dvir:: ", specialString)) {
-        dvirSpecial <- gsub("dvir:: ", "", specialString)
-        if (grepl("^begin-picture", dvirSpecial)) {
+    if (grepl("^rdvi:: ", specialString)) {
+        rdviSpecial <- gsub("rdvi:: ", "", specialString)
+        if (grepl("^begin-picture", rdviSpecial)) {
             h <- get("h")
             v <- get("v")
             set("savedH", h)
@@ -490,7 +490,7 @@ gridSpecial <- function(op) {
                 grid.rect(gp=gpar(col="grey", fill=NA))
             set("transformDepth", 0)
             set("inPicture", TRUE)
-        } else if (grepl("^end-picture", dvirSpecial)) {
+        } else if (grepl("^end-picture", rdviSpecial)) {
             popViewport()
             set("h", get("savedH"))
             set("v", get("savedV"))        
@@ -500,7 +500,7 @@ gridSpecial <- function(op) {
                 ## "draw" special off screen
                 ## Output may be multiple specials from
                 ## "protocolled" (recorded) output, so split first by ";"
-                specials <- strsplit(dvirSpecial, ";")[[1]]
+                specials <- strsplit(rdviSpecial, ";")[[1]]
                 lapply(specials, drawSpecial)
             }
         }
@@ -530,8 +530,8 @@ tikzPreamble <- function(packages=NULL) {
     }
     paste("\\documentclass[12pt]{standalone}",
           paste0("\\def\\pgfsysdriver{",
-                 system.file("tikz", "pgfsys-dvir.def",
-                             package="dvir"),
+                 system.file("tikz", "pgfsys-rdvi.def",
+                             package="rdvi"),
                  "}"),
           "\\usepackage{tikz}",
           usepackages,
@@ -547,7 +547,7 @@ tikzpicturePreamble <- function(packages=NULL) {
 
 tikzpicturePostamble <- function(bbox=NULL) {
     postamble <- paste(c("\\end{tikzpicture}",
-                         dvirPostamble),
+                         rdviPostamble),
                        collapse="\n")
     if (!is.null(bbox)) {
         paste(tikzBBox(bbox[1], bbox[2], bbox[3], bbox[4]),
@@ -560,7 +560,7 @@ tikzpicturePostamble <- function(bbox=NULL) {
 
 tikzGrob <- function(tex, ...,
                      preamble=tikzPreamble(),
-                     postamble=getOption("dvir.postamble"),
+                     postamble=getOption("rdvi.postamble"),
                      engine=TeXengine("latex", special=tikzSpecial)) {
     latexGrob(tex, ...,
               preamble=preamble, postamble=postamble, engine=engine)

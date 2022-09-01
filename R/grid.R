@@ -173,7 +173,7 @@ dvigrid <- function(x, device, engine, vp, scale=1) {
     set("currentDevice", dev.cur())
     ## Create off-screen device (just to capture grid display list)
     void_dev()
-    set("dvirDevice", dev.cur())
+    set("rdviDevice", dev.cur())
     ## Set up main viewport
     pushViewport(vp)
     ## "draw" dvi output off screen
@@ -205,7 +205,7 @@ dviGrob.character <- function(dvi,
                               device=names(dev.cur()),
                               name=NULL,
                               engine=latexEngine,
-                              initFonts=getOption("dvir.initFonts"),
+                              initFonts=getOption("rdvi.initFonts"),
                               ...) {
     dviGrob(readDVI(dvi), x, y, default.units, just, rot, device, name, engine, initFonts)
 }
@@ -217,7 +217,7 @@ dviGrob.DVI <- function(dvi,
                         device=names(dev.cur()),
                         name=NULL,
                         engine=latexEngine,
-                        initFonts=getOption("dvir.initFonts"),
+                        initFonts=getOption("rdvi.initFonts"),
                         ...) {
     set("initFonts", initFonts)
 
@@ -250,8 +250,8 @@ grid.dvi <- function(...) {
 }
 
 typeset <- function(tex,
-                    preamble=getOption("dvir.preamble"),
-                    postamble=getOption("dvir.postamble"),
+                    preamble=getOption("rdvi.preamble"),
+                    postamble=getOption("rdvi.postamble"),
                     engine=latexEngine,
                     tinytex=FALSE,
                     file=NULL,
@@ -291,12 +291,12 @@ latexGrob <- function(tex,
                       rot=0,
                       device=names(dev.cur()),
                       name=NULL,
-                      preamble=getOption("dvir.preamble"),
-                      postamble=getOption("dvir.postamble"),
+                      preamble=getOption("rdvi.preamble"),
+                      postamble=getOption("rdvi.postamble"),
                       engine=latexEngine,
                       tinytex=FALSE,
                       file=NULL,
-                      initFonts=getOption("dvir.initFonts"),
+                      initFonts=getOption("rdvi.initFonts"),
                       quiet=TRUE) {
     if (missing(tex)) {
         if (is.null(file))

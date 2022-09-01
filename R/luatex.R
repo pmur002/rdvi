@@ -312,7 +312,7 @@ luaCharWidth <- function(raw, fonts, f) {
 ## Code for character metrics
 
 AdobeGlyphList <- read.table(system.file("adobe", "glyphlist.txt",
-                                         package="dvir"),
+                                         package="rdvi"),
                              sep=";", col.names=c("name", "code"),
                              stringsAsFactors=FALSE)
 
@@ -523,10 +523,10 @@ fontNameGen <- function() {
     index <- 0
     function() {
         index <<- index + 1
-        sprintf("dvir_font_%03d", index)
+        sprintf("rdvi_font_%03d", index)
     }
 }
-dvirFontName <- fontNameGen()
+rdviFontName <- fontNameGen()
 
 ## Get index of the desired glyph name within the subsetted font
 getGlyphIndex <- function(glyphs, fontfile, suffix, originalName) {
@@ -634,7 +634,7 @@ subsetFont <- function(fontfile, charIndex) {
         glyphInfo <- getGlyph(glyphs, charIndex)
         extractGlyph(fontInfo$file, glyphInfo$index, fontInfo$subfile)
         ttxfile <- unwrapFont(fontInfo$subfile, fontInfo$suffix)
-        subsetName <- dvirFontName()
+        subsetName <- rdviFontName()
         subsetGlyphIndex <- getGlyphIndex(glyphs,
                                           fontInfo$file, fontInfo$suffix,
                                           glyphInfo$name)
@@ -747,7 +747,7 @@ luaPreamble <- function(font="Times") {
 
 lualatexGrob <- function(tex, ...,
                          preamble=luaPreamble(),
-                         postamble=getOption("dvir.postamble"),
+                         postamble=getOption("rdvi.postamble"),
                          engine=lualatexEngine) {
     latexGrob(tex, ..., 
               preamble=preamble, postamble=postamble, engine=engine)

@@ -272,7 +272,7 @@ dviGlyphs.character <- function(dvi, ...) {
 dviGlyphs.DVI <- function(dvi, 
                           device=names(dev.cur()),
                           engine=latexEngine,
-                          initFonts=getOption("dvir.initFonts"),
+                          initFonts=getOption("rdvi.initFonts"),
                           ...) {
     set("initFonts", initFonts)
     fonts <- dviFonts(dvi, device, engine)

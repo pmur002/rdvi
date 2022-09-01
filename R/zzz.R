@@ -1,17 +1,17 @@
 
-dvirPreamble <- paste(c("\\documentclass[12pt]{standalone}",
+rdviPreamble <- paste(c("\\documentclass[12pt]{standalone}",
                         "\\begin{document}"),
                       collapse="\n")
 
-dvirPostamble <- "\\end{document}"
+rdviPostamble <- "\\end{document}"
 
 .onLoad <- function(libname, pkgname) {
     initFontMap()
     initFontConfig()
     initLua()
 
-    options(dvir.preamble=dvirPreamble,
-            dvir.postamble=dvirPostamble,
-            dvir.initFonts=FALSE)
+    options(rdvi.preamble=rdviPreamble,
+            rdvi.postamble=rdviPostamble,
+            rdvi.initFonts=FALSE)
 }
 
